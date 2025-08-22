@@ -1,0 +1,18 @@
+WITH master_table AS (
+    SELECT 
+        t.id AS transaction_id,
+        t.amount,
+        t.client_id,
+        t.merchant_city,
+        t.merchant_state
+    FROM `technical-test-mandiri-469703.technical_test.transactions_data` t
+)
+SELECT
+    merchant_city,
+    merchant_state,
+    COUNT(transaction_id) AS num_transactions,
+    SUM(amount) AS total_spent,
+    COUNT(DISTINCT client_id) AS num_users
+FROM master_table
+GROUP BY merchant_city, merchant_state
+ORDER BY total_spent DESC

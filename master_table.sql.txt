@@ -1,0 +1,59 @@
+WITH master_table AS (
+
+ SELECT
+
+t.id AS transaction_id,
+
+t.date,
+
+t.amount,
+
+t.use_chip,
+
+t.merchant_city,
+
+t.merchant_state,
+
+t.mcc,
+
+u.id AS user_id,
+
+u.current_age,
+
+u.retirement_age,
+
+u.gender,
+
+u.per_capita_income,
+
+u.yearly_income,
+
+u.total_debt,
+
+u.credit_score,
+
+u.num_credit_cards,
+
+c.card_brand,
+
+c.card_type,
+
+c.credit_limit,
+
+c.has_chip
+
+FROM `technical-test-mandiri-469703.technical_test.transactions_data` t
+
+LEFT JOIN `technical-test-mandiri-469703.technical_test.users_data` u
+
+ON t.client_id = u.id
+
+LEFT JOIN `technical-test-mandiri-469703.technical_test.cards_data` c
+
+ON t.card_id = c.id
+
+)
+
+SELECT *
+
+FROM master_table

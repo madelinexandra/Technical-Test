@@ -1,0 +1,32 @@
+WITH master_table AS (
+ SELECT 
+     t.id AS transaction_id,
+     t.amount,
+     t.client_id,
+     u.id AS user_id,
+     u.current_age,
+     u.gender,
+     u.yearly_income,
+     u.total_debt,
+     u.num_credit_cards,
+     c.credit_limit
+ FROM `technical-test-mandiri-469703.technical_test.transactions_data` t
+ LEFT JOIN `technical-test-mandiri-469703.technical_test.users_data` u
+     ON t.client_id = u.id
+ LEFT JOIN `technical-test-mandiri-469703.technical_test.cards_data` c
+     ON t.card_id = c.id
+  )
+ SELECT
+   user_id,
+   COUNT(transaction_id) AS num_transactions,
+   SUM(amount) AS total_spent,
+   AVG(amount) AS avg_transaction,
+   AVG(credit_limit) AS avg_credit_limit,
+   SUM(amount) / NULLIF(AVG(credit_limit),0) AS utilization_rate,
+   total_debt / NULLIF(yearly_income,0) AS debt_to_income_ratio,
+   num_credit_cards,
+   current_age,
+   gender,
+   yearly_income
+  FROM master_table
+  GROUP BY user_id, total_debt, yearly_income, num_credit_cards, current_age, gender, yearly_income
